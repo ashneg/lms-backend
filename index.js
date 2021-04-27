@@ -13,16 +13,8 @@ app.use(cors());
 //Initializers
 DBInitializer();
 
-
-
-// app.use(express.json());
-
 //Importing controllers
 app.use('/',loanController);
-
-
-
-
 
 
 //Starting the Server
