@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const {loans} = require('../models/loan');
-// const {userSchema} = require('../models/userSchema');
-
-const auth = require('../middlewares/authUser');
-const admin = require('../middlewares/authAdmin');
 
 const router = express.Router();
 
@@ -18,16 +14,14 @@ routes to be made
 */
 
 router.get('/',async(req,res,next)=>{
-    
-    res.send("Please reffer documentation for routes")
+    res.send("Please reffer documentation for routes");
 });
 
 
 //Create a loan [user,admin]
-//validate using joi valodator
 router.post('/loans',async(req,res,next)=>{
     try{
-        // console.log(req.body[0].phoneNumber);
+        
         const loan = new loans({
             id: req.body[0].id,
             userName: req.body[0].userName,
@@ -61,25 +55,28 @@ router.post('/loans',async(req,res,next)=>{
 //Get req admin only
 router.get('/loans?:status?:loanAmountGreater?',async(req,res,next)=>{
     try{
-        const status = req.query.status;
+        const status = (req.query.status);
         const loanAmountGreater = req.query.loanAmountGreater;
-        // res.send({status,loanAmountGreater});
-        if(status || loanAmountGreater)loans.find({
-            status : req.query.status,
-            loanAmount : {$gt: req.query.loanAmountGreater}
+
+        if(status && loanAmountGreater)loans.find({
+            status : status.toLowerCase(),
+            loanAmount : {$gt: loanAmountGreater}
         },(err,loan)=>{
             res.status(200).send(loan);
         });
+
         else if(status && !loanAmountGreater)loans.find({
-            status : req.query.status,
+            status : status.toLowerCase(),
         },(err,loan)=>{
             res.status(200).send(loan);
         });
+
         else if(!status && loanAmountGreater)loans.find({
             loanAmount : {$gt: req.query.loanAmountGreater}
         },(err,loan)=>{
             res.status(200).send(loan);
         });
+
         else loans.find({},(err,loan)=>{
             var allLoans = {};
             loan.forEach(l => {
@@ -97,10 +94,6 @@ router.get('/loans?:status?:loanAmountGreater?',async(req,res,next)=>{
 
 
 //get loan with id
-/*
-    to do
-    response when not found
-*/
 router.get('/loans/:id',async(req,res)=>{
     try{
         await loans.findOne({_id: req.query.id}).then(loan =>{
@@ -115,8 +108,6 @@ router.get('/loans/:id',async(req,res)=>{
 
 
 //Status approval or deniyal
-//check only status gets updated
-//enum error
 router.put('/loans/:id',async(req,res)=>{
     try{
         var valid = ['new','approved','rejected','cancelled'];
@@ -135,7 +126,6 @@ router.put('/loans/:id',async(req,res)=>{
 
 
 //delete by id
-//some error if id not exists
 router.delete('/loans/:id',async(req,res)=>{
     try{
         const loan = await loans.findOne({_id: req.query.id}).then(loan =>{

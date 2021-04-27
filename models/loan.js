@@ -7,11 +7,6 @@ const loanList = mongoose.Schema({
 });
 
 const loanSchema = new mongoose.Schema({
-    id: {
-        type:String,
-        required:true,
-        unique:true
-    },
     userName: {
         type: String,
         required: true
