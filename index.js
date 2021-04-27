@@ -6,9 +6,7 @@ const DBInitializer = require('./Initializers/DBInitializers');
 const loanController = require('./controllers/loanController');
 
 const app = express();
-// app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors());
 
 //Initializers
 DBInitializer();

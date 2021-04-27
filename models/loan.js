@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 
-const loanList = mongoose.Schema({
-    allLoans:{
-        type : [String]
-    },
-});
 
 const loanSchema = new mongoose.Schema({
     userName: {
@@ -36,16 +31,4 @@ const loanSchema = new mongoose.Schema({
 });
 
 const loans = mongoose.model("loans",loanSchema);
-const allLoans = mongoose.model('allLoans',loanList);
-
 module.exports.loans = loans;
-module.exports.allLoans = allLoans;
-
-// {
-//     customerName: String,
-//     phoneNo: String,
-//     Email: String,
-//     loanAmount: Number,
-//     status: Enum {New, Approved, Rejected,Cancelled}
-//     creditScore: Number
-//     }
