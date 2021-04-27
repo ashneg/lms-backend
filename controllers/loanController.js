@@ -17,6 +17,11 @@ routes to be made
 5. Cancel loan (admin/user)(del)
 */
 
+router.get('/',async(req,res,next)=>{
+    
+    res.send("Please reffer documentation for routes")
+});
+
 
 //Create a loan [user,admin]
 //validate using joi valodator
