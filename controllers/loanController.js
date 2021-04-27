@@ -14,7 +14,7 @@ routes to be made
 */
 
 router.get('/',async(req,res,next)=>{
-    res.send("Please reffer documentation for routes");
+    res.send("Please reffer to documentation for routes");
 });
 
 
@@ -53,7 +53,7 @@ router.post('/loans',async(req,res,next)=>{
 
 
 //Get req admin only
-router.get('/loans?:status?:loanAmountGreater?',async(req,res,next)=>{
+router.get('/loans?:status?:loanAmountGreater',async(req,res,next)=>{
     try{
         const status = (req.query.status);
         const loanAmountGreater = req.query.loanAmountGreater;
@@ -96,7 +96,7 @@ router.get('/loans?:status?:loanAmountGreater?',async(req,res,next)=>{
 //get loan with id
 router.get('/loans/:id',async(req,res)=>{
     try{
-        await loans.findOne({_id: req.query.id}).then(loan =>{
+        await loans.findOne({_id: req.params.id}).then(loan =>{
             if(loan) res.status(200).json(loan);
             else res.status(404).json("not Found");
         });
@@ -111,11 +111,11 @@ router.get('/loans/:id',async(req,res)=>{
 router.put('/loans/:id',async(req,res)=>{
     try{
         var valid = ['new','approved','rejected','cancelled'];
-        if(!loans.findOne({_id:req.query.id})){
+        if(!loans.findOne({_id:req.params.id})){
             res.status(404).send("Does not exist");
         }
         if(!valid.includes((req.body.status).toLowerCase())) res.status(400).send("Can't update");
-        loans.findByIdAndUpdate(req.query.id,{status: req.body.status},(err,loan)=>{
+        loans.findByIdAndUpdate(req.params.id,{status: req.body.status},(err,loan)=>{
             return res.send(loan);
         });
     }
@@ -128,10 +128,10 @@ router.put('/loans/:id',async(req,res)=>{
 //delete by id
 router.delete('/loans/:id',async(req,res)=>{
     try{
-        const loan = await loans.findOne({_id: req.query.id}).then(loan =>{
+        loans.findOne({_id: req.params.id}).then(loan =>{
             if(!loan) res.status(404).json("not Found");
         });
-        await loans.findByIdAndRemove(req.query.id,(err,loan)=>{
+        loans.findByIdAndRemove(req.params.id,(err,loan)=>{
             return res.status(200).send("Successfully deleated");
         });
     }
