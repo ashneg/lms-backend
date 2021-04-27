@@ -34,7 +34,7 @@ router.post('/loans',async(req,res,next)=>{
         
         // //Credit score based condition could be placed
         const output = await loan.save();
-        res.status(201).send(output);
+        res.status(201).send("Sucessfully Saved");
         
     }
     catch(error){
